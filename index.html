@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Test deck</title>
+  <title>Predict Child's Height using Parent's Height</title>
   <meta charset="utf-8">
-  <meta name="description" content="Test deck">
-  <meta name="author" content="">
+  <meta name="description" content="Predict Child's Height using Parent's Height">
+  <meta name="author" content="Banarasi Tippa">
   <meta name="generator" content="slidify" />
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
@@ -32,9 +32,9 @@
     <!-- LOGO SLIDE -->
         <slide class="title-slide segue nobackground">
   <hgroup class="auto-fadein">
-    <h1>Test deck</h1>
+    <h1>Predict Child's Height using Parent's Height</h1>
     <h2></h2>
-    <p><br/></p>
+    <p>Banarasi Tippa<br/>Database Engineer</p>
   </hgroup>
   <article></article>  
 </slide>
@@ -43,13 +43,14 @@
     <!-- SLIDES -->
     <slide class="" id="slide-1" style="background:;">
   <hgroup>
-    <h2>Read-And-Delete</h2>
+    <h2>Dataset details</h2>
   </hgroup>
   <article data-timings="">
     <ol>
-<li>Edit YAML front matter</li>
-<li>Write using R Markdown</li>
-<li>Use an empty line followed by three dashes to separate slides!</li>
+<li><p>This dataset was tabulated by Galton in 1885  </p></li>
+<li><p>Dataset has two variables child and parent</p></li>
+<li><p>Child - Child&#39;s height</p></li>
+<li><p>Parent - the &quot;midparent&quot; height, an average of fathers height and 1.08 time the mother&#39;s</p></li>
 </ol>
 
   </article>
@@ -58,13 +59,58 @@
 
 <slide class="class" id="id" style="background:;">
   <hgroup>
-    <h2>Slide 2</h2>
+    <h2>Lets look at the dataset</h2>
   </hgroup>
   <article data-timings="">
-    <pre><code class="r">plot(1:10, 1:10)
+    <pre><code class="r">data(galton)
+str(galton)
 </code></pre>
 
-<p><img src="assets/fig/unnamed-chunk-1.png" alt="plot of chunk unnamed-chunk-1"> </p>
+<pre><code>## &#39;data.frame&#39;:    928 obs. of  2 variables:
+##  $ child : num  61.7 61.7 61.7 61.7 61.7 62.2 62.2 62.2 62.2 62.2 ...
+##  $ parent: num  70.5 68.5 65.5 64.5 64 67.5 67.5 67.5 66.5 66.5 ...
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Model Creation</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">fit &lt;- lm(child ~ parent, galton)
+# summary(fit)
+coef(fit)
+</code></pre>
+
+<pre><code>## (Intercept)      parent 
+##     23.9415      0.6463
+</code></pre>
+
+<p><b> Model : </p>
+
+<p>child height = 23.9415 + parent * 0.6463 </b></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Use the model to predict</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Lets see what&#39;s the child&#39;s height given parent&#39;s height = 70</p>
+
+<pre><code class="r">y &lt;- predict(fit, newdata = data.frame(parent = 70))
+ggplot(galton, aes(parent, child)) + geom_point() + geom_smooth(method = &quot;glm&quot;, 
+    col = &quot;steelblue&quot;) + geom_point(aes_string(x = 70, y = y), color = &quot;red&quot;, 
+    shape = 8, size = 5) + labs(title = paste(&quot;Estimated Child Height :&quot;, y))
+</code></pre>
+
+<p><img src="assets/fig/unnamed-chunk-4.png" alt="plot of chunk unnamed-chunk-4"> </p>
 
   </article>
   <!-- Presenter Notes -->
@@ -76,14 +122,26 @@
     <ul>
       <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=1 title='Read-And-Delete'>
+        data-slide=1 title='Dataset details'>
          1
       </a>
     </li>
     <li>
       <a href="#" target="_self" rel='tooltip' 
-        data-slide=2 title='Slide 2'>
+        data-slide=2 title='Lets look at the dataset'>
          2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Model Creation'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Use the model to predict'>
+         4
       </a>
     </li>
   </ul>
